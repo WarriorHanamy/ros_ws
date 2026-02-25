@@ -54,6 +54,15 @@ With parameters:
   pointcloud.enable:=true
 ```
 
+With parameters file:
+
+```bash
+./ros_exec ros2 launch realsense2_camera rs_launch.py \
+  params_file:=config/camera_params.yaml \
+  camera_namespace:=robot1 \
+  camera_name:=D455_1
+```
+
 ### Camera Name and Namespace
 
 Set camera namespace and name to distinguish between cameras and platforms.
@@ -102,6 +111,36 @@ After launching with `camera_namespace:=robot1 camera_name:=D455_1`:
 /robot1/D455_1/calib_config_write
 /robot1/D455_1/device_info
 /robot1/D455_1/hw_reset
+```
+
+## Configuration Files
+
+### Camera Parameters (config/camera_params.yaml)
+
+```yaml
+enable_color: true
+rgb_camera.color_profile: 1280x720x30
+enable_depth: true
+depth_module.depth_profile: 1280x720x30
+align_depth.enable: true
+enable_sync: true
+publish_tf: true
+tf_publish_rate: 1.0
+pointcloud.enable: true
+```
+
+### RViz Configuration (config/realsense.rviz)
+
+Pre-configured RViz2 setup for visualizing:
+- Color camera stream
+- Depth camera stream
+- Point cloud (if enabled)
+- TF frames
+
+Start RViz2 with config:
+
+```bash
+./ros_exec rviz2 -d config/realsense.rviz
 ```
 
 ### Visualization with RViz2
