@@ -104,6 +104,44 @@ After launching with `camera_namespace:=robot1 camera_name:=D455_1`:
 /robot1/D455_1/hw_reset
 ```
 
+### Visualization with RViz2
+
+**1. Start RViz2:**
+
+```bash
+./ros_exec rviz2
+```
+
+**2. Add Display for Color Image:**
+
+- Click "Add" button (or press `Ctrl+N`)
+- Select "Image" and click "OK"
+- Set Image Topic to: `/robot1/D455_1/color/image_raw`
+- Optional: Set Transport Hint to "raw"
+
+**3. Add Display for Depth Image:**
+
+- Click "Add" button
+- Select "Image" and click "OK"
+- Set Image Topic to: `/robot1/D455_1/depth/image_rect_raw`
+- Optional: Set Transport Hint to "raw"
+
+**4. Add Display for Point Cloud (if enabled):**
+
+- Click "Add" button
+- Select "PointCloud2" and click "OK"
+- Set Topic to: `/robot1/D455_1/depth/points` (if pointcloud.enable:=true)
+- Set Size (m): 0.01 or desired size
+- Set Color Transformer to "RGB8" or "Intensity"
+
+**5. Optional - Add Camera Display:**
+
+- Click "Add" button
+- Select "Camera" and click "OK"
+- Set Image Topic to: `/robot1/D455_1/color/image_raw`
+- Set Camera Info Topic to: `/robot1/D455_1/color/camera_info`
+- Adjust visibility and clipping distance as needed
+
 ## Script
 
 The `ros_exec` script automatically:
