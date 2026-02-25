@@ -28,13 +28,13 @@ To clean build artifacts:
 **With ros2 run:**
 
 ```bash
-ros2 run realsense2_camera realsense2_camera_node
+./ros_exec ros2 run realsense2_camera realsense2_camera_node
 ```
 
 With parameters (e.g., enable temporal and spatial filters):
 
 ```bash
-ros2 run realsense2_camera realsense2_camera_node --ros-args \
+./ros_exec ros2 run realsense2_camera realsense2_camera_node --ros-args \
   -p enable_color:=false \
   -p spatial_filter.enable:=true \
   -p temporal_filter.enable:=true
@@ -43,13 +43,13 @@ ros2 run realsense2_camera realsense2_camera_node --ros-args \
 **With ros2 launch:**
 
 ```bash
-ros2 launch realsense2_camera rs_launch.py
+./ros_exec ros2 launch realsense2_camera rs_launch.py
 ```
 
 With parameters:
 
 ```bash
-ros2 launch realsense2_camera rs_launch.py \
+./ros_exec ros2 launch realsense2_camera rs_launch.py \
   depth_module.depth_profile:=1280x720x30 \
   pointcloud.enable:=true
 ```
@@ -61,7 +61,7 @@ Set camera namespace and name to distinguish between cameras and platforms.
 **Example with ros2 launch:**
 
 ```bash
-ros2 launch realsense2_camera rs_launch.py \
+./ros_exec ros2 launch realsense2_camera rs_launch.py \
   camera_namespace:=robot1 \
   camera_name:=D455_1
 ```
@@ -69,7 +69,7 @@ ros2 launch realsense2_camera rs_launch.py \
 **Example with ros2 run:**
 
 ```bash
-ros2 run realsense2_camera realsense2_camera_node \
+./ros_exec ros2 run realsense2_camera realsense2_camera_node \
   --ros-args \
   -r __node:=D455_1 \
   -r __ns:=/robot1
