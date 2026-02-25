@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+export PYTHON=/usr/bin/python3
+export PATH=/usr/bin:/bin:/usr/local/bin:$PATH
+unset VIRTUAL_ENV
+unset PYTHONPATH
+
+if [ -f "install/setup.bash" ]; then
+    source install/setup.bash
+fi
+
+if [ "$1" = "clean" ]; then
+    rm -rf build/ log/
+elif [ "$1" = "build" ]; then
+    colcon build
+else
+    "$@"
+fi
