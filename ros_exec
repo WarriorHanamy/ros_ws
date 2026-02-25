@@ -13,7 +13,7 @@ fi
 if [ "$1" = "clean" ]; then
     rm -rf build/ log/
 elif [ "$1" = "build" ]; then
-    colcon build
+    colcon build --symlink-install
 else
     "$@"
 fi
