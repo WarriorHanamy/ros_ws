@@ -2,7 +2,7 @@ device_type: D455
 enable_color: false
 enable_depth: true
 depth_module.depth_profile: 480x270x15
-enable_sync: true
+enable_sync: false
 publish_tf: true
 pointcloud.enable: false
 align_depth.enable: false
