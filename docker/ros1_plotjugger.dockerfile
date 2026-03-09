@@ -19,6 +19,16 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     ros-noetic-desktop \
     ros-noetic-plotjuggler*
 
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update && apt-get install -y \
+    ros-noetic-mavros \
+    ros-noetic-mavros-extras \
+    ros-noetic-mavros-msgs \
+    wget && \
+    wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh && \
+    bash ./install_geographiclib_datasets.sh
+
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 
-CMD ["bash", "-c", "source /opt/ros/noetic/setup.bash && roslaunch plotjuggler plotjuggler.launch"]
+CMD ["bash", "-c", "source /opt/ros/noetic/setup.bash && rosrun plotjuggler plotjuggler"]
