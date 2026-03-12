@@ -65,7 +65,7 @@ Python Terminal:
 ## Project Structure
 
 ```
-zenoh_python_demo/
+zenoh_python_amd64_22_demo/
 ├── Dockerfile           # Ubuntu 22.04 with Python and Zenoh
 ├── Makefile            # Build and run commands
 ├── README.md           # This file

@@ -1,0 +1,60 @@
+FROM ubuntu:22.04 AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    pkg-config \
+    autoconf \
+    libtool \
+    wget \
+    curl \
+    ca-certificates \
+    cmake \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+WORKDIR /build
+
+RUN git clone --depth 1 --branch 1.7.2 https://github.com/eclipse-zenoh/zenoh-c.git && \
+    cd zenoh-c && \
+    mkdir build && cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && \
+    cmake --build . --config Release -j$(nproc) && \
+    cmake --build . --target install && \
+    cd /build && rm -rf zenoh-c
+
+RUN git clone --depth 1 --branch 1.7.2 https://github.com/eclipse-zenoh/zenoh-cpp.git && \
+    cd zenoh-cpp && \
+    mkdir build && cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && \
+    cmake --build . --config Release -j$(nproc) && \
+    cmake --build . --target install && \
+    cd /build && rm -rf zenoh-cpp
+
+WORKDIR /app
+
+COPY . /app/
+
+RUN mkdir -p build && cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build . --config Release -j$(nproc)
+
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgcc-s1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY --from=builder /usr/local/lib/libzenohc.so* /usr/local/lib/
+COPY --from=builder /app/build/publish_vector /app/publish_vector
+
+RUN ldconfig
+
+CMD ["./publish_vector"]
