@@ -1,7 +1,8 @@
-import zenoh
 import json
 import random
 import time
+
+import zenoh
 
 
 def main():
@@ -11,15 +12,12 @@ def main():
     cpp_key = "demo/random_vector"
     py_key = "demo/python_vector"
 
-    def listener(sample):
-        try:
-            payload = sample.payload.to_string()
-            print(f"[PY] Received from C++: {payload}")
+    recv_count = 0
 
-            vec = json.loads(payload)
-            print(f"[PY] Vector shape: {len(vec)}, values: {vec[:3]}...")
-        except Exception as e:
-            print(f"[PY] Error parsing: {e}")
+    def listener(sample):
+        nonlocal recv_count
+        recv_count += 1
+        print(f"[PY] <- CPP: seq={recv_count}")
 
     sub = session.declare_subscriber(cpp_key, listener)
 
@@ -35,7 +33,7 @@ def main():
             matrix = [[random.uniform(0, 10) for _ in range(3)] for _ in range(5)]
             payload = json.dumps(matrix)
             pub.put(payload)
-            print(f"[PY] Published #{count + 1}: 5x3 matrix")
+            print(f"[PY] -> CPP: seq={count + 1}")
             count += 1
             time.sleep(1)
     except KeyboardInterrupt:

@@ -16,9 +16,9 @@ int main() {
 
     KeyExpr py_keyexpr("demo/python_vector");
     
-    auto data_handler = [](const Sample& sample) {
-        auto payload = sample.get_payload().as_string();
-        std::cout << "[CPP] Received from Python: " << payload << std::endl;
+    int recv_count = 0;
+    auto data_handler = [&recv_count](const Sample& sample) {
+        std::cout << "[CPP] <- PY: seq=" << ++recv_count << std::endl;
     };
 
     auto subscriber = session.declare_subscriber(py_keyexpr, data_handler, closures::none);
@@ -48,7 +48,7 @@ int main() {
 
         publisher.put(Bytes(payload));
 
-        std::cout << "[CPP] Published #" << ++count << ": " << payload << std::endl;
+        std::cout << "[CPP] -> PY: seq=" << ++count << std::endl;
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
