@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:20.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
@@ -50,4 +50,17 @@ RUN mkdir -p build && cd build && \
     cmake .. -DCMAKE_BUILD_TYPE=Release && \
     cmake --build . --config Release -j$(nproc)
 
-CMD ["./build/publish_vector"]
+FROM ubuntu:20.04
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgcc-s1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY --from=builder /usr/local/lib/libzenohc.so* /usr/local/lib/
+COPY --from=builder /app/build/publish_vector /app/publish_vector
+
+RUN ldconfig
+
+CMD ["./publish_vector"]
