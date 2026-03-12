@@ -14,6 +14,26 @@ Bidirectional communication bridge between Ubuntu 20.04 (C++) and Ubuntu 22.04 (
 - **Low Latency**: Optimized for real-time data streaming
 - **Language Agnostic**: Native support for C++, Python, Rust, and more
 
+### Lightweight Evidence
+
+Docker image sizes compared to typical robotics/simulation images:
+
+```bash
+$ docker image ls | grep zenoh
+docker-run-zenoh-cpp:latest      86.3MB
+docker-run-zenoh-py:latest       167MB
+```
+
+Comparison with other common robotics images:
+
+| Image | Size |
+|-------|------|
+| docker-run-zenoh-cpp | **86.3MB** |
+| docker-run-zenoh-py | **167MB** |
+| px4-sim-v1.14.0 | 7.48GB |
+| isaaclab_image:v0 | 27.1GB |
+| nvcr.io/nvidia/isaac/ros:x86_64-ros2_humble | 40GB |
+
 ## Problem Statement
 
 Solves the communication gap between:
@@ -41,6 +61,17 @@ Zenoh acts as a middleware layer enabling:
 │  └───────────────┘  │                  │  └───────────────┘  │
 └─────────────────────┘                  └─────────────────────┘
 ```
+
+## Proof of Working Bridge
+
+Successfully tested bidirectional communication between Ubuntu 20.04 (C++) and Ubuntu 22.04 (Python):
+
+![Zenoh Bidirectional Communication Test](../zeonh.png)
+
+The screenshot demonstrates:
+- C++ publisher/subscriber running on Ubuntu 20.04
+- Python bridge running on Ubuntu 22.04
+- Real-time message exchange between both endpoints
 
 ## Technical Details
 
