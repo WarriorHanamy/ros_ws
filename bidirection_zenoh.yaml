@@ -1,0 +1,14 @@
+session_name: bidirection_zenoh
+windows:
+  - window_name: zenoh_demo
+    layout: even-horizontal
+    panes:
+      - shell_command:
+        - cd ~/ros_ws
+        - echo "=== C++ Publisher/Subscriber (Ubuntu 20.04) ==="
+        - make docker-run-zenoh-cpp
+      - shell_command:
+        - cd ~/ros_ws
+        - echo "=== Python Bridge (Ubuntu 22.04) ==="
+        - sleep 2
+        - make docker-run-zenoh-py
